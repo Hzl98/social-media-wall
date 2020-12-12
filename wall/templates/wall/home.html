@@ -1,0 +1,65 @@
+{% extends "wall/stickyheader.html" %}
+<!-- {% block loginregister %}
+    {% if user.is_authenticated %}
+        <a href="{% url 'login' %}" class="say_hi">Logout</a>
+    {% else %}
+        <a href="{% url 'register' %}" class="say_hi">Register</a>&nbsp&nbsp&nbsp
+        <a href="{% url 'login' %}" class="say_hi">Login</a>
+    {% endif %}
+{% endblock loginregister %} -->
+{% block content %}
+{% load static %}
+	
+<div class="single_slider align-items-center">
+	<div class="service_area">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-6">
+					<h3>My Walls</h3>
+				</div>
+				<div class="col-md-6">
+					<a href="{% url 'wall-createnew' %}" style="float: right;" class="boxed-btn3 wow fadeInLeft"  data-wow-duration="1s" data-wow-delay=".2s" href="portfolio.html">Create New Wall</a>
+				</div>
+			</div>
+			<br>
+			<div class="row">
+				{% for wall in walls %}
+					<div class="col-md-6">
+						<div class="single_service text-center wow fadeInLeft" data-wow-duration="1.2s" data-wow-delay=".4s">
+							<div class="icon">
+							</div>
+							<a href="{% url 'wall-details' wall.id %}"><h3>{{wall.name}}</h3></a>
+							<p></p>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+
+	<div class="service_area">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-6">
+					<h4>As a Moderator</h4>
+				</div>
+			</div>
+			<br>
+			<div class="row">
+				{% for wall in mod_walls %}
+					<div class="col-md-6">
+						<div class="single_service text-center wow fadeInLeft" data-wow-duration="1.2s" data-wow-delay=".4s">
+							<div class="icon">
+							</div>
+							<a href="{% url 'wall-moderation' wall.id %}"><h3>{{wall.name}}</h3></a>
+							<p></p>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+
+</div>
+
+{% endblock content %}

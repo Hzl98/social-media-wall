@@ -1,0 +1,48 @@
+{% extends "wall/include.html" %}
+{% block body %}
+	<br><br><br><br><br><br>
+	<div class="row"> 
+    	<div class="col-md-4">
+            
+        </div>
+        <div class="col-md-4">
+        	<div class="card" style="background-color:#baf5b3;">
+				<div class="card-header">
+				 	<b>Administration</b>
+				</div>
+				<div class="card-body">
+					{% if msg %}
+						<div class="alert alert-danger" role="alert">
+							{{ msg }}
+						</div>
+					{% endif %}
+	                <form action="{% url 'do-login' %}" method="POST">
+						{% csrf_token %}
+						Username : <br>
+						<input class="form-control" type="text" name="username" placeholder="Username">
+						<br>
+						Password : <br>
+						<input class="form-control" type="password" name="password" placeholder="Password"><br>
+						<div class="row">
+		                	<div class="col-md-4">
+		                        
+		                    </div>
+		                    <div class="col-md-4" style="text-align: center">
+		                    	<button type="submit" class="btn btn-primary">
+									Login
+								</button>    
+		                    </div>
+							
+							<div class="col-md-4">
+		                        
+		                    </div>
+						</div>
+					</form>
+				</div>
+			</div>
+        </div>
+        <div class="col-md-4">
+            
+        </div>
+    </div>
+{% endblock %}

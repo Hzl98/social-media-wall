@@ -1,0 +1,24 @@
+{% extends "wall/stickyheader.html" %}
+{% block content %}
+{% load static %}
+<div class="single_slider align-items-center">
+	<div class="service_area">
+		<div class="row">
+			<div class="col-md-4" style="text-align: center;"></div>
+			<div class="col-md-4" style="text-align: center;">
+				<h3>Create Your New Wall</h3>
+				<form method="POST">
+					{% csrf_token %}
+					<fieldset>
+						{{ form }}
+					</fieldset>
+					<button type="submit">
+						Create Wall
+					</button>
+				</form>
+			</div>
+			<div class="col-md-4" style="text-align: center;"></div>
+		</div>
+	</div>
+</div>
+{% endblock content %}

@@ -1,0 +1,195 @@
+{% extends "wall/stickyheader.html" %}
+{% block content %}
+{% load static %}
+<div class="single_slider align-items-center">
+	<div class="service_area">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-6">
+					<h3>{{wall.name}} - Source Management</h3>
+				</div>
+				<div class='col-md-6'>
+					<a href="{% url 'settings' wall.id %}" class="boxed-btn3" style="float: right;">Settings</a>
+					<a href="{% url 'wall-display' wall.id %}" class="boxed-btn3" style="float: right;">Display</a>
+				</div>
+			</div>
+		</div>
+		<ul class="nav justify-content-center">
+			<li class="nav-item">
+				<a class="nav-link" href="{% url 'wall-details' wall.id %}">Overview</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="{% url 'source-add' wall.id %}">Sources</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="{% url 'post-list' wall.id %}">Content</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="#"><b>Moderation</b></a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="{% url 'wall-chart' wall.id %}">Chart</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="{% url 'wall-reset' wall.id %}">Reset</a>
+			</li>
+		</ul>
+	</div>
+
+	<div class="row">
+		<div class="col-md-1"></div>
+		<div class="col-md-5">
+			<h4>Moderators</h4>
+			<div id="modlist">
+				
+			</div>
+		</div>
+		<div class="col-md-5">
+			<h4>Invite A Friend</h4>
+			<div id="friendlist">
+				<div class="card">
+			    	<div class="card-body">
+			    		<h5 class="card-title">Special title treatment</h5>
+			    		<div style="text-align: right;">
+			    			<button href="#" class="btn btn-primary">Invite As Moderator</button>
+			    		</div>
+				    </div>
+		    	</div>
+			</div>
+		</div>
+		<div class="col-md-1"></div>
+	</div>
+
+</div>
+{% endblock content %}
+{% block sc %}
+<script type="text/javascript">
+
+	$(document).ready(
+		ajax_init()
+	);
+
+	function ajax_init(){
+		ajax_mods();
+		ajax_friends();
+	}
+
+	function ajax_mods(){
+	    $.ajax({                                      
+		    url: "{% url 'wall-getmods' %}",              
+		    type: "GET",          
+		    data: {
+				'wall' : {{wall.id}}
+			},
+		    success : function(response){
+				var m = JSON.parse(response.mods);
+				$('#modlist').html("");
+				if (m.length > 0) {
+					for (var i = m.length - 1; i >= 0; i--) {
+						var inner = 
+							'<div class="card">' + 
+								'<div class="card-body">' + 
+									'<h5 class="card-title">' + m[i].fields.username + '</h5>' + 
+								'</div>' + 
+							'</div>';
+						$('#modlist').append(inner);
+					}
+				}
+				else {
+					$('#modlist').html("This Wall doesn't have Moderators Yet");
+				}
+			}
+		});
+	}
+
+	function ajax_friends(){
+		$.ajax({
+			url: "{% url 'get_friends' %}",
+			type: "GET",
+			success : function(response){
+				var f = JSON.parse(response.friends);
+				$('#friendlist').html("");
+				if (f.length > 0) {
+					for (var i = f.length - 1; i >= 0; i--) {
+						var inner = 
+							'<div class="card">' + 
+								'<div class="card-body">' + 
+									'<h5 class="card-title">' + f[i].fields.u2_username + '</h5>' + 
+									'<div style="text-align: right;">' + 
+										'<button data-id="' + f[i].fields.u2 + '" class="modinv btn btn-primary">Invite As Moderator</button>' + 
+									'</div>' + 
+								'</div>' + 
+							'</div>';
+						$('#friendlist').append(inner);
+					}
+				}
+				else {
+					$('#modlist').html("You don't have any Friends Yet");
+				}
+			}
+		});
+	}
+
+	function ajax_send_mod_invite(uid){
+		$.ajax({
+			url: "{% url 'wall-sendmodinvite' %}",
+			type: "GET",
+			data: {
+				'wall' : {{wall.id}},
+				'mod_id' : uid
+			},
+			success : function(response){
+				if (response.type == true) {
+
+					var f = JSON.parse(response.friends);
+					var m = JSON.parse(response.mods);
+					$('#friendlist').html("");
+					$('#modlist').html("");
+					if (f.length > 0) {
+						for (var i = f.length - 1; i >= 0; i--) {
+							var inner = 
+								'<div class="card">' + 
+									'<div class="card-body">' + 
+										'<h5 class="card-title">' + f[i].fields.u2_username + '</h5>' + 
+										'<div style="text-align: right;">' + 
+											'<button data-id="' + f[i].fields.u2 + '" class="modinv btn btn-primary">Invite As Moderator</button>' + 
+										'</div>' + 
+									'</div>' + 
+								'</div>';
+							$('#friendlist').append(inner);
+						}
+					}
+					else {
+						$('#modlist').html("You don't have any Friends Yet");
+					}
+
+					$('#modlist').html("");
+					if (m.length > 0) {
+						for (var i = m.length - 1; i >= 0; i--) {
+							var inner = 
+								'<div class="card">' + 
+									'<div class="card-body">' + 
+										'<h5 class="card-title">' + m[i].fields.username + '</h5>' + 
+									'</div>' + 
+								'</div>';
+							$('#modlist').append(inner);
+						}
+					}
+					else {
+						$('#modlist').html("This Wall doesn't have Moderators Yet");
+					}
+
+				}
+				alert(response.msg);
+				
+			}
+		});
+	}
+
+	$('body').on('click', 'button.modinv', function() {
+		let id = $(this).data('id');
+		ajax_send_mod_invite(id)
+	});
+
+</script>
+{% endblock sc %}

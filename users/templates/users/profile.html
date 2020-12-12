@@ -1,0 +1,321 @@
+{% extends "wall/stickyheader.html" %}
+{% block content %}
+{% load static %}
+<script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="SB-Mid-client-s6-3AQzhwf9FNkJT">
+</script>
+<div class="single_slider">
+	<div class="service_area">
+		<div class="row">
+			<div class="col-md-4" style="text-align: center;"></div>
+			<div class="col-md-4" style="text-align: center;">
+				<h3>{{ user.username }}</h3><br>
+			</div>
+			<div class="col-md-4" style="text-align: center;"></div>
+		</div>
+		<div class="row">
+			<div class="col-md-7">
+
+				<div class="row">
+					<div class="col-md-2" style="text-align: center;"></div>
+					<div class="col-md-3">
+						<p>First Name</p>
+					</div>
+					<div class="col-md-1">
+						<p>:</p>
+					</div>
+					<div class="col-md-4">
+						<p>{{ user.first_name }}</p>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-2" style="text-align: center;"></div>
+					<div class="col-md-3">
+						<p>Last Name</p>
+					</div>
+					<div class="col-md-1">
+						<p>:</p>
+					</div>
+					<div class="col-md-4">
+						<p>{{ user.last_name }}</p>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-2" style="text-align: center;"></div>
+					<div class="col-md-3">
+						<p>Email</p>
+					</div>
+					<div class="col-md-1">
+						<p>:</p>
+					</div>
+					<div class="col-md-4">
+						<p>{{ user.email }}</p>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-2" style="text-align: center;"></div>
+					<div class="col-md-3">
+						<p>Membership Status</p>
+					</div>
+					<div class="col-md-1">
+						<p>:</p>
+					</div>
+					<div class="col-md-4">
+						{% if user_info.is_premium == 0 %}
+							<p id="premium-status">Not a Premium Member</p>
+							<button id="pay-button" class="boxed-btn3">Activate Premium</button>
+						{% else %}
+							<p>Premium Membership Activated</p>
+						{% endif %}
+					</div>
+				</div>
+				{% if user_info.is_premium == 0 %}
+					<br>
+				{% endif %}	
+				<div class="row">
+					<div class="col-md-2" style="text-align: center;"></div>
+					<div class="col-md-3">
+						<p>Profile Picture</p>
+					</div>
+					<div class="col-md-1">
+						<p>:</p>
+					</div>
+					<div class="col-md-4">
+						{% if user_info.image %}
+
+						{% else %}
+							<img src="{% static 'images/default.png' %}" alt="">
+						{% endif %}
+					</div>
+				</div>
+				<br>
+				<div class="row">
+					<div class="col-md-4" style="text-align: center;"></div>
+					<div class="col-md-4" style="text-align: center;">
+						<a href="#" class="boxed-btn3">Edit Profile</a>
+					</div>
+					<div class="col-md-4" style="text-align: center;"></div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="accordion" id="accordionExample">
+					<div class="card">
+						<div class="card-header" id="headingOne">
+							<h2 class="mb-0">
+								<button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+									<b>Friend List</b>
+								</button>
+							</h2>
+						</div>
+						<div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+							<div class="card-body">
+								<div id="friend_list">
+								{% if friend_list %}
+									{% for friend in friend_list %}
+										<div class="row">
+											<div class="col-md-6">
+												{{ friend.u2_username }}
+											</div>
+											<div class="col-md-6" style='text-align: right;'>
+												<a href="{% url 'friend-profile' friend.u2_id %}" class="btn btn-primary">View Profile</a>
+											</div>
+										</div><br>
+									{% endfor %}
+								{% else %}
+						        	No Friends Added Yet
+						        {% endif %}
+						        </div>
+							</div>
+				    	</div>
+				  	</div>
+				  	<div class="card">
+					    <div class="card-header" id="headingTwo">
+					      	<h2 class="mb-0">
+						        <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+						        	<b>Friend Requests</b>
+						        </button>
+							</h2>
+						</div>
+						<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+							<div class="card-body">
+								<div id="friend_req_list">
+								{% if friend_reqs %}
+									{% for friend_req in friend_reqs %}
+										<br>
+										<div class="row">
+											<div class="col-md-6">
+												{{ friend_req.requester_username }}
+											</div>
+											<div class="col-md-6" style='text-align: right;'>
+												<button onclick="ajax_acc({{ friend_req.id }})" class='btn btn-primary'>Accept</button>
+											</div>
+										</div>
+									{% endfor %}
+								{% else %}
+									No Incoming Friend Request
+								{% endif %}
+								</div>
+					     	</div>
+					    </div>
+				  	</div>
+					<div class="card">
+				    	<div class="card-header" id="headingThree">
+							<h2 class="mb-0">
+						        <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+						        	<b>Add a Friend</b>
+						        </button>
+					      	</h2>
+				    	</div>
+				    	<div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+					      	<div class="card-body">
+						        <div class="input-group mb-3">
+                                    <input id="srckey" type="text" class="form-control" placeholder='Search Keyword'
+                                        onfocus="this.placeholder = ''"
+                                        onblur="this.placeholder = 'Search Keyword'">
+                                    <div class="input-group-append">
+                                        <button id="srcbtn" class="btn" type="button"><i class="ti-search"></i></button>
+                                    </div>
+                                    <br>
+                                </div>
+                                <p id="searchresult"></p>
+                                <p id="test"></p>
+						    </div>
+				    	</div>
+				  	</div>
+				</div>
+			</div>
+		</div>
+		<br>
+	</div>
+</div>
+{% endblock content %};
+{% block sc %}
+<script type="text/javascript">
+
+	$('#pay-button').click(function() {
+		var amount = 10000;
+		$.ajax({
+			url : "{% url 'go-premium' %}",
+			type : 'GET',
+			data : {
+				'amount' : amount
+			},
+			success : function(response){
+				snap.pay(response.token, {
+					onSuccess: function(result){
+					$.ajax({
+							url : "{% url 'change-premium-status' %}",
+							type : 'GET',
+							success : function(response){
+								alert(response.msg);
+								$("#pay-button").hide();
+								$("#premium-status").html('Premium Membership Activated');
+							}
+						});
+					},
+					onPending: function(result){
+						
+					},
+					onError: function(result){
+
+					}
+				});
+			}
+		});
+	});
+
+	$("#srcbtn").click(function() {
+		var srckey = $("#srckey").val();
+		if (srckey != "") {
+			$.ajax({
+				url : "{% url 'search' %}",
+				type : 'GET',
+				data : {
+					'srckey' : srckey
+				},
+				success : function(response){
+					$('#searchresult').html('');
+					for (var i = response.length - 1; i >= 0; i--) {
+						$('#searchresult').append(
+							"<br><div class=row>" + 
+								"<div class='col-md-6'>" + 
+									response[i].fields.username + 
+								"</div>" + 
+								"<div class='col-md-6' style='text-align: right;'>" + 
+									"<button onclick=ajax_add(" + response[i].pk + ") class='btn btn-primary'>Add</button>" + 
+								"</div>" + 
+							"</div>"
+						);
+					}
+				}
+			});
+		}
+	});
+
+	function ajax_add(id) {
+		var target_id = id;
+		$.ajax({
+			url : "{% url 'add_user' %}",
+			type : 'GET',
+			data : {
+				'target_id' : target_id
+			},
+			success : function(response){
+				$('#searchresult').html(response.msg)
+			}
+		});
+	}
+	
+	function ajax_acc(id) {
+		var request_id = id;
+		$.ajax({
+			url : "{% url 'acc_user' %}",
+			type : 'GET',
+			data : {
+				'request_id' : request_id
+			},
+			success : function(response){
+				$('#friend_req_list').html('')
+				var fr = JSON.parse(response.friend_reqs);
+				if (fr.length > 0) {
+					for (var i = fr.length - 1; i >= 0; i--) {
+						$('#friend_req_list').append(
+							"<div class='row'>" +
+								"<div class='col-md-6'>" +
+									fr[i].fields.requester_username + 
+								"</div>" +
+								"<div class='col-md-6' style='text-align: right;'>" +
+									"<button data-id='" + fr[i].pk + "' class='accbtn btn btn-primary'>Accept</button>" + 
+								"</div>" +
+							"</div>"
+						)
+					}
+				}
+				else {
+					$('#friend_req_list').html('No Incoming Friend Request');
+				}
+				$('#friend_list').html('')
+				var fl = JSON.parse(response.friend_list);
+				if (fl.length > 0) {
+					for (var i = fl.length - 1; i >= 0; i--) {
+						$('#friend_list').append(
+							"<div class='row'>" +
+								"<div class='col-md-6'>" + 
+									fl[i].fields.u2_username + 
+								"</div>" + 
+							"</div>"
+						)
+					}
+				}
+			}
+		});
+	}
+
+	$('body').on('click', 'button.accbtn', function() {
+		let id = $(this).data('id');
+		ajax_acc(id);
+	});
+</script>
+{% endblock sc %}

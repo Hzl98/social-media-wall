@@ -1,0 +1,29 @@
+{% extends "wall/stickyheader.html" %}
+{% block content %}
+{% load static %}
+<div class="single_slider align-items-center">
+	<div class="service_area">
+		<div class="row">
+			<div class="col-md-4" style="text-align: center;"></div>
+			<div class="col-md-4" style="text-align: center;">
+				<h3>Wall Settings</h3>
+				<form method="POST">
+					{% csrf_token %}
+					<fieldset>
+						{{ form.as_p }}
+					</fieldset>
+					<button class="boxed-btn3" type="submit">
+						Update
+					</button>
+				</form>
+				<form method="post" enctype="multipart/form-data" action="{% url 'wall-logo' object.id %}"><br>Logo : 
+					{% csrf_token %}<br><br>
+    				<input type="file" name="logo">
+    				<br><br><button type="submit" class="boxed-btn3">Upload</button>
+				</form>
+			</div>
+			<div class="col-md-4" style="text-align: center;"></div>
+		</div>
+	</div>
+</div>
+{% endblock content %}

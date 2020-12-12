@@ -1,0 +1,80 @@
+{% extends "wall/stickyheader.html" %}
+{% block content %}
+{% load static %}
+<div class="single_slider align-items-center">
+	<div class="service_area">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-6">
+					<h3>{{wall.name}} - Source Management</h3>
+				</div>
+				<div class='col-md-6'>
+					<a href="{% url 'settings' wall.id %}" class="boxed-btn3" style="float: right;">Settings</a>
+					<a href="{% url 'wall-display' wall.id %}" class="boxed-btn3" style="float: right;">Display</a>
+				</div>
+			</div>
+		</div>
+		<ul class="nav justify-content-center">
+			<li class="nav-item">
+				<a class="nav-link" href="{% url 'wall-details' wall.id %}">Overview</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="#"><b>Sources</b></a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="{% url 'post-list' wall.id %}">Content</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="{% url 'wall-moderators' wall.id %}">Moderation</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="{% url 'wall-chart' wall.id %}">Chart</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="{% url 'wall-reset' wall.id %}">Reset</a>
+			</li>
+		</ul>
+	</div>
+	
+	<div class="row">
+		<div class="col-md-4"></div>
+		<div class="col-md-4 text-center">
+			<h3>Add New Source</h3>
+			<form method="POST">
+				{% csrf_token %}
+				<fieldset>
+					{{ form.as_p }}
+				</fieldset>
+				<button class="boxed-btn3" type="submit">
+					Add
+				</button>
+			</form>
+		</div>
+		<div class="col-md-4"></div>
+	</div>
+	<br>
+
+	<div class="row">
+		<div class='col-md-2'></div>
+		<div class='col-md-8'>
+			<div class="progress-table-wrap">
+				<div class="progress-table">
+					<div class="table-head">
+						<div class="serial">#</div>
+						<div class="country">Source</div>
+						<div class="visit">Tag</div>
+					</div>
+					{% for source in source_list %}
+						<div class="table-row">
+							<div class="serial">#</div>
+							<div class="country">{{source.source}}</div>
+							<div class="visit">{{source.tag}}</div>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+		<div class='col-md-2'></div>
+	</div>
+</div>
+{% endblock content %}

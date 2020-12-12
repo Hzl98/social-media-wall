@@ -1,0 +1,24 @@
+{% extends "wall/include.html" %}
+{% block body %}
+<br>
+<div class="row">
+	<div class="col-md-1"></div>
+	<div class="col-md-5">
+		<h2>Wall Details : {{ wall.name }}</h2>
+	</div>
+</div><br>
+<div class="row">
+	<div class="col-md-1"></div>
+	<div class="col-md-5">
+		Created By : {{ wall.owner }}<br>
+		Created At : {{ wall.date_posted }}<br>
+	</div>
+</div><br>
+<div class="row">
+	<div class="col-md-1"></div>
+	<div class="col-md-5">
+		<h4>Posts : </h4>
+	</div>
+</div><br>
+
+{% endblock %}

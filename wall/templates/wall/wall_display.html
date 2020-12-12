@@ -1,0 +1,111 @@
+{% extends "wall/stickyheader.html" %}
+{% block content %}
+{% load static %}
+
+<div class="single_slider align-items-center" style="background-color:#000033;">
+	<div class="service_area">
+		<div class="container">
+			
+			<div id="ad-area" class="row">
+				
+				<div class="col-md-4" style="height:200px">
+					{% if wall.logo != "" %}
+						<img style="max-width:100%;max-height:100%;" src="{{ wall.logo }}"/>
+					{% else %}
+						<img style="max-width:100%;max-height:100%;" src="https://firebasestorage.googleapis.com/v0/b/nodejs-learning-b6d94.appspot.com/o/img%2Fwall%2Flogo.png?alt=media&token=d84a67b2-5956-4ee0-aa3f-709799589cfb"/>
+					{% endif %}
+				</div>
+				
+				{% if premium_status is False %}
+					<div class="col-md-8" style="height:200px">
+						<img style="max-width:100%;max-height:100%;" src="{% static 'ad.png' %}"/>
+					</div>
+				{% else %}
+					<div class="col-md-8"></div>
+				{% endif %}	
+			</div>
+			
+			<br><br>
+			<div id="posts-area_grid" class="row">
+
+			</div>
+
+			<div id="posts-area_carousel" class="row testmonial_active owl-carousel" style="background-color:#cccccc;">
+				
+			</div>
+			
+		</div>
+	</div>
+	<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+</div>
+{% endblock content %}
+{% block sc %}
+<script type="text/javascript">
+
+	function ajax_post() {
+		var des = {{wall.design}};
+	    $.ajax({                                      
+		    url: "{% url 'posts-get-display' %}",              
+		    type: "GET",          
+		    data: {
+		    	'wall' : {{wall.id}}
+		    },
+		    success : function(response){
+				var p = JSON.parse(response.posts);
+
+				if (p.length > 0) {
+					var inner = "";
+					$('#posts-area_grid').html("");
+					$('#posts-area_carousel').html("");
+					if (des == 1) {
+						for (var i = p.length - 1; i >= 0; i--) {
+							inner += 
+								'<div class="col-sm-3" style="margin-bottom : 30px;">' + 
+									'<div class="card">' + 
+										'<div class="card-body">' + 
+											'<h5 class="card-title">' + (p[i].fields.author || "Admin") + '</h5>' + 
+											'<p class="card-text">' + p[i].fields.content + '</p>' + 
+										'</div>' + 
+									'</div>' + 
+								'</div>';
+						}
+						$('#posts-area_grid').append(inner);
+					}
+					else {
+						for (var i = p.length - 1; i >= 0; i--) {
+							
+				            $('#posts-area_carousel').append(
+				            	'<div class="single_carousel">' + 
+									'<br>' + 
+									'<br>' + 
+									'<br>' + 
+									'<div class="row">' + 
+										'<div class="col-sm-3"></div>' + 
+										'<div class="single_testmonial text-center col-sm-6">' +
+											'<p>' + p[i].fields.content + '</p>' + 
+											'<div class="testmonial_author">' + 
+												'<br>' + 
+												'<h4>' + (p[i].fields.author || "Admin") + '</h4>' + 
+											'</div>' + 
+										'</div>' + 
+										'<div class="col-sm-3"></div>' + 
+									'</div>' + 
+									'<br>' + 
+									'<br>' + 
+									'<br>' + 
+								'</div>'
+				            );
+						}
+						
+					}
+
+				}
+			}
+		});
+	}
+
+	$(document).ready(
+		setInterval(ajax_post, 2000)
+	);
+</script>
+{% endblock sc %}

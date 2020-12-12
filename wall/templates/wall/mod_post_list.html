@@ -1,0 +1,270 @@
+{% extends "wall/stickyheader.html" %}
+{% block content %}
+{% load static %}
+<div class="single_slider align-items-center">
+	<div class="service_area">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-6">
+					<h3>{{wall.name}} - Moderation</h3>
+				</div>
+			</div>
+		</div>
+		<!-- <ul class="nav justify-content-center">
+			<li class="nav-item">
+				<a class="nav-link" href="{% url 'wall-details' wall.id %}">Overview</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="{% url 'source-add' wall.id %}">Sources</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="#"><b>Content</b></a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="{% url 'wall-moderators' wall.id %}">Moderation</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="#">Privacy</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="#">Reset</a>
+			</li>
+		</ul> -->
+	</div>
+
+	<div class='row'>
+		<div class='col-md-2'></div>
+		<div class='col-md-3' style="text-align: center;">
+			<a href="{% url 'post-create' wall.id %}" class="boxed-btn3">Create Native Post</a>
+		</div>
+		<div class='col-md-3'>
+			<select name="platform" id="p_select">
+				<option value="">--</option>
+				<option value="Twitter">Twitter</option>
+				<option value="Instagram">Instagram</option>
+				<option value="Facebook">Facebook</option>
+			</select>
+			<select name="period" id="d_select">
+				<option value="">--</option>
+				<option value="This Week">This Week</option>
+				<option value="This Month">This Month</option>
+				<option value="This Year">This Year</option>
+			</select>
+		</div>
+		<div class='col-md-3'>
+			<button id="btnfilter" class="boxed-btn3">Filter</button>
+		</div>
+	</div>
+
+	<br>
+	<div class="row">
+		<div class='col-md-2'></div>
+		<div class='col-md-8' id="post-table">
+			<div class="progress-table-wrap">
+				<div class="progress-table" id="posts-table">
+					<div class="table-head">
+						<div class="serial">#</div>
+						<div class="visit">Content</div>
+						<div class="percentage">Date Posted</div>
+						<div class="percentage">From</div>
+						<div class="visit">Action</div>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+		<div class='col-md-2'></div>
+	</div>
+
+</div>
+{% endblock content %}
+{% block sc %}
+<script type="text/javascript">
+	// $(document).ready(
+	function ajax_post(){
+	    $.ajax({                                      
+		    url: "{% url 'posts-get' %}",              
+		    type: "GET",          
+		    data: {
+		    	'wall' : {{wall.id}}
+		    },
+		    success : function(response){
+				var p = JSON.parse(response.posts);
+				if (p.length > 0) {
+					for (var i = 0; i < p.length; i++) {
+						var inner = '<div class="table-row">' + 
+								'<div class="serial">#</div>' + 
+								'<div class="visit">' + p[i].fields.content + '</div>' + 
+								'<div class="percentage">' + p[i].fields.date_posted + '</div>' + 
+								'<div class="percentage">' + (p[i].fields.platform || "Native Post") + '</div>';
+						if (p[i].fields.visibility == 1) {
+							inner += '<div class="visit">' + 
+								"<button data-id='" + p[i].pk + "' class='hbtn btn btn-primary'>Hide</button>" + 
+								'</div>';
+						}
+						else {
+							inner += '<div class="visit">' + 
+								"<button data-id='" + p[i].pk + "' class='sbtn btn btn-primary'>Show</button>" + 
+								'</div>';
+						}
+						inner += '</div>'
+						$('#posts-table').append(inner);
+					}
+					
+				}
+			}
+		});
+	}
+	// );
+	$(document).ready(
+		ajax_post()
+	);
+
+	$('body').on('click', 'button.hbtn', function() {
+		let id = $(this).data('id');
+		ajax_hide_post(id);
+	});
+
+	$('body').on('click', 'button.sbtn', function() {
+		let id = $(this).data('id');
+		ajax_show_post(id);
+	});
+
+	function ajax_show_post(id) {
+		$.ajax({
+			url: "{% url 'p-show' %}",
+			type: "GET",
+			data: {
+				'post' : id
+			},
+			success : function(response){
+				$('#posts-table').html("");
+				$('#posts-table').append(
+					'<div class="table-head">' + 
+						'<div class="serial">#</div>' + 
+						'<div class="visit">Content</div>' + 
+						'<div class="percentage">Date Posted</div>' +
+						'<div class="percentage">From</div>' + 
+						'<div class="visit">Action</div>' + 
+					'</div>'
+				);
+				var p = JSON.parse(response.posts);
+				if (p.length > 0) {
+					for (var i = 0; i < p.length; i++) {
+						var inner = '<div class="table-row">' + 
+								'<div class="serial">#</div>' + 
+								'<div class="visit">' + p[i].fields.content + '</div>' + 
+								'<div class="percentage">' + p[i].fields.date_posted + '</div>' + 
+								'<div class="percentage">' + (p[i].fields.platform || "Native Post") + '</div>';
+						if (p[i].fields.visibility == 1) {
+							inner += '<div class="visit">' + 
+								"<button data-id='" + p[i].pk + "' class='hbtn btn btn-primary'>Hide</button>" + 
+								'</div>';
+						}
+						else {
+							inner += '<div class="visit">' + 
+								"<button data-id='" + p[i].pk + "' class='sbtn btn btn-primary'>Show</button>" + 
+								'</div>';
+						}
+						inner += '</div>'
+						$('#posts-table').append(inner);
+					}
+				}
+			}
+		});
+	}
+
+	function ajax_hide_post(id) {
+		$.ajax({
+			url: "{% url 'p-hide' %}",
+			type: "GET",
+			data: {
+				'post' : id
+			},
+			success : function(response){
+				$('#posts-table').html("");
+				$('#posts-table').append(
+					'<div class="table-head">' + 
+						'<div class="serial">#</div>' + 
+						'<div class="visit">Content</div>' + 
+						'<div class="percentage">Date Posted</div>' + 
+						'<div class="percentage">From</div>' +
+						'<div class="visit">Action</div>' + 
+					'</div>'
+				);
+				var p = JSON.parse(response.posts);
+				if (p.length > 0) {
+					for (var i = 0; i < p.length; i++) {
+						var inner = '<div class="table-row">' + 
+								'<div class="serial">#</div>' + 
+								'<div class="visit">' + p[i].fields.content + '</div>' + 
+								'<div class="percentage">' + p[i].fields.date_posted + '</div>' + 
+								'<div class="percentage">' + (p[i].fields.platform || "Native Post") + '</div>';
+						if (p[i].fields.visibility == 1) {
+							inner += '<div class="visit">' + 
+								"<button data-id='" + p[i].pk + "' class='hbtn btn btn-primary'>Hide</button>" + 
+								'</div>';
+						}
+						else {
+							inner += '<div class="visit">' + 
+								"<button data-id='" + p[i].pk + "' class='sbtn btn btn-primary'>Show</button>" + 
+								'</div>';
+						}
+						inner += '</div>'
+						$('#posts-table').append(inner);
+					}
+				}
+			}
+		});
+	}
+
+	$("#btnfilter").click(function() {
+		var plat = $("#p_select").val();
+		var per = $("#d_select").val();
+		$.ajax({
+			url: "{% url 'post-filter' %}",
+			type: "GET",
+			data: {
+				'plat' : plat,
+				'per' : per,
+				'wall' : {{wall.id}}
+			},
+			success : function(response){
+				$('#posts-table').html("");
+				$('#posts-table').append(
+					'<div class="table-head">' + 
+						'<div class="serial">#</div>' + 
+						'<div class="visit">Content</div>' + 
+						'<div class="percentage">Date Posted</div>' + 
+						'<div class="percentage">From</div>' +
+						'<div class="visit">Action</div>' + 
+					'</div>'
+				);
+				var p = JSON.parse(response.posts);
+				if (p.length > 0) {
+					for (var i = 0; i < p.length; i++) {
+						var inner = '<div class="table-row">' + 
+								'<div class="serial">#</div>' + 
+								'<div class="visit">' + p[i].fields.content + '</div>' + 
+								'<div class="percentage">' + p[i].fields.date_posted + '</div>' +
+								'<div class="percentage">' + (p[i].fields.platform || "Native Post") + '</div>';
+						if (p[i].fields.visibility == 1) {
+							inner += '<div class="visit">' + 
+								"<button data-id='" + p[i].pk + "' class='hbtn btn btn-primary'>Hide</button>" + 
+								'</div>';
+						}
+						else {
+							inner += '<div class="visit">' + 
+								"<button data-id='" + p[i].pk + "' class='sbtn btn btn-primary'>Show</button>" + 
+								'</div>';
+						}
+						inner += '</div>'
+						$('#posts-table').append(inner);
+					}
+				}
+			}
+		});
+	});
+
+</script>
+{% endblock sc %}

@@ -1,0 +1,56 @@
+{% extends "wall/header.html" %}
+{% block loginregister %}
+    <a href="{% url 'register' %}" class="say_hi">Register</a>
+{% endblock loginregister %}
+{% block content %}
+	<!-- <h1>Register</h1>
+	<div>
+		<form method="POST">
+			{% csrf_token %}
+			<fieldset>
+				<legend>
+					Join Now!
+				</legend>
+				{{ form }}
+			</fieldset>
+			<button type="submit">
+				Sign Up
+			</button>
+		</form>
+	</div> -->
+	<div class="slider_area">
+        <div class="single_slider  d-flex align-items-center slider_bg_1 overlay">
+            <div class="container">
+                <div class="row">
+                	<div class="col-md-4">
+                        
+                    </div>
+                    <div class="col-md-4">
+                        <div class="slider_text">
+                            <form method="POST">
+								{% csrf_token %}
+								<fieldset>
+									{{ form.as_p }}
+								</fieldset>
+								<div class="row">
+				                	<div class="col-md-4">
+				                        
+				                    </div>
+									<button type="submit" class="boxed-btn3">
+										Login
+									</button>
+									<div class="col-md-4">
+				                        
+				                    </div>
+								</div>
+							</form>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends "wall/include.html" %}
+{% block body %}
+{% load static %}
+<header>
+    <div class="header-area">
+        <div class="main-header-area sticky">
+            <div class="container-fluid p-0">
+                <div class="row align-items-center no-gutters">
+                    <div class="col-xl-2 col-lg-2">
+                        <div class="logo-img">
+                            <a href="index.html">
+                                <img src="{% static 'img/logo.png' %}" alt="">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-xl-8 col-lg-8">
+                        <div class="main-menu d-none d-lg-block text-center">
+                            
+                        </div>
+                    </div>
+                    <div class="col-xl-2 col-lg-2">
+                        {% if request.user.is_authenticated %}
+                        <div class="main-menu d-none d-lg-block text-center">
+                            <nav>
+                                <ul id="navigation">
+                                    <li><a class="active">{{ request.user.username }}</a>
+                                        <ul class="submenu">
+                                            <li><a href="{% url 'profile' %}">Account</a></li>
+                                            <li><a href="portfolio_details.html">Logout</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-12">
+                        <div class="mobile_menu d-block d-lg-none"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+{% block content %}{% endblock content %}
+{% endblock body %}
+{% block scripts %}
+{% block sc %}
+{% endblock sc %}
+{% endblock scripts %}

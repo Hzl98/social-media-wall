@@ -1,0 +1,97 @@
+{% extends "wall/stickyheader.html" %}
+{% block content %}
+{% load static %}
+<div class="single_slider">
+	<div class="service_area">
+		<div class="row">
+			<div class="col-md-4" style="text-align: center;"></div>
+			<div class="col-md-4" style="text-align: center;">
+				<h3>{{ object.username }}</h3><br>
+			</div>
+			<div class="col-md-4" style="text-align: center;"></div>
+		</div>
+		<div class="row">
+			<div class="col-md-7">
+
+				<div class="row">
+					<div class="col-md-2" style="text-align: center;"></div>
+					<div class="col-md-3">
+						<p>First Name</p>
+					</div>
+					<div class="col-md-1">
+						<p>:</p>
+					</div>
+					<div class="col-md-4">
+						<p>{{ object.first_name }}</p>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-2" style="text-align: center;"></div>
+					<div class="col-md-3">
+						<p>Last Name</p>
+					</div>
+					<div class="col-md-1">
+						<p>:</p>
+					</div>
+					<div class="col-md-4">
+						<p>{{ object.last_name }}</p>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-2" style="text-align: center;"></div>
+					<div class="col-md-3">
+						<p>Email</p>
+					</div>
+					<div class="col-md-1">
+						<p>:</p>
+					</div>
+					<div class="col-md-4">
+						<p>{{ object.email }}</p>
+					</div>
+				</div>
+				
+				<!-- <div class="row">
+					<div class="col-md-2" style="text-align: center;"></div>
+					<div class="col-md-3">
+						<p>Profile Picture</p>
+					</div>
+					<div class="col-md-1">
+						<p>:</p>
+					</div>
+					<div class="col-md-4">
+						{% if user_info.image %}
+
+						{% else %}
+							<img src="{% static 'images/default.png' %}" alt="">
+						{% endif %}
+					</div>
+				</div> -->
+				<br>
+				
+			</div>
+			<div class="col-md-4">
+				<h4>Walls</h4>
+				{% if walls %}
+					{% for wall in walls %}
+						<div class="card">
+							<div class="card-body">
+								<h5 class="card-title">{{wall.name}}</h5>
+								<div style="text-align: right;">
+									<button data-id="' + f[i].fields.u2 + '" class="modinv btn btn-primary">View Wall</button>
+								</div>
+							</div>
+						</div><br>
+					{% endfor %}
+				{% else %}
+					This User doesn't have any walls
+				{% endif %}
+			</div>
+		</div>
+		<br>
+	</div>
+</div>
+{% endblock content %};
+{% block sc %}
+{% endblock sc %}
