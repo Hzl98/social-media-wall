@@ -25,7 +25,7 @@ SECRET_KEY = 'g0rz6)h6sjyjba#y3h4wu7zcy4btajl4&iyx)g3rxe3z+n^4c&'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['ta-hanzel.herokuapp.com', 'localhost:8000']
+ALLOWED_HOSTS = ['ta-hanzel.herokuapp.com', 'localhost']
 
 
 # Application definition
