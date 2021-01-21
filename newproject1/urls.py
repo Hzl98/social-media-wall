@@ -32,6 +32,7 @@ urlpatterns = [
     path('get_friends/', users_views.get_friends, name='get_friends'),
     path('user-profile/<int:pk>/', users_views.friend_profile.as_view(), name='friend-profile'),
     path('edit/', users_views.editProfilePage, name='edit'),
-    path('change-premium-status/', users_views.change_premium_status, name='change-premium-status')
+    path('change-premium-status/', users_views.change_premium_status, name='change-premium-status'),
+    path('privacy', users_views.privacypolicy, name='privacypolicy')
     # path('logout', auth_views.LoginView.as_view(), name='logout'),
 ]

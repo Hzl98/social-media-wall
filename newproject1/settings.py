@@ -79,12 +79,12 @@ WSGI_APPLICATION = 'newproject1.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE' : 'django.db.backends.mysql',
-        'NAME' : 'u522840214_TAhanzel',
-        'USER' : 'u522840214_hanzelwp',
-        'PASSWORD' : 'm2p+XsvRr6N+',
-        'HOST' : 'sql143.main-hosting.eu',
-        'PORT' : ''
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'dbtugasakhir',
+        'USER' : 'root',
+        'PASSWORD' : '',
+        'HOST' : 'localhost',
+        'PORT' : '3306'
     }
 }
 

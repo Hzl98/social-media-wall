@@ -35,6 +35,9 @@ def register(request):
 		form = UserRegForm()
 	return render(request, 'users/register.html', {'form': form})
 
+def privacypolicy(request):
+	return render(request, 'users/privacypolicy.html')
+
 def UserProfilePage(request):
 	current_user = request.user
 	context = {
