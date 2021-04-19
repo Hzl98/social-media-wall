@@ -27,7 +27,7 @@ class post(models.Model):
 	platform = models.CharField(default="", max_length=20)
 
 class Sources(models.Model):
-	source_choices = [('Twitter', 'Twitter'), ('Facebook', 'Facebook'), ('Instagram', 'Instagram')]
+	source_choices = [('Twitter', 'Twitter'), ('Tumblr', 'Tumblr')]
 	source = models.CharField(max_length=15, choices=source_choices)
 	wall = models.ForeignKey(wall, on_delete=models.CASCADE)
 	tag = models.CharField(max_length=100)

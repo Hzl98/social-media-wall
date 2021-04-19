@@ -62,15 +62,16 @@
 	var config = {
 		type: 'bar',
 		data: {
-			labels: ['Twitter', 'Instagram', 'Facebook'],
+			labels: ['Twitter', 'Tumblr'],
 			datasets: [{
 				label: 'Post Count',
 				backgroundColor: window.chartColors.red,
 				borderColor: window.chartColors.red,
 				data: [
-					{{ t_c }},
-					{{ i_c }},
-					{{ f_c }}
+					{{ tw_c }},
+					// {{ i_c }},
+					// {{ f_c }}
+					{{ tu_c }}
 				],
 				fill: false,
 			}]

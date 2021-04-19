@@ -258,21 +258,18 @@ class wall_chart(DetailView):
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 		context['wall'] = wall.objects.get(pk = self.kwargs['pk'])
-		context['instagram'] = post.objects.filter(platform="Instagram")
-		context['facebook'] = post.objects.filter(platform="Facebook")
+		context['tumblr'] = post.objects.filter(platform="Tumblr")
 		context['twitter'] = post.objects.filter(platform="Twitter")
 		return context
 
 def wall_chart(request, pk):
 	wall_get = wall.objects.get(pk = pk)
-	qset_t = post.objects.filter(posted_on = wall_get).filter(platform = "Twitter").count()
-	qset_i = post.objects.filter(posted_on = wall_get).filter(platform = "Instagram").count()
-	qset_f = post.objects.filter(posted_on = wall_get).filter(platform = "Facebook").count()
+	qset_tw = post.objects.filter(posted_on = wall_get).filter(platform = "Twitter").count()
+	qset_tu = post.objects.filter(posted_on = wall_get).filter(platform = "Tumblr").count()
 	context = {
 		'wall' : wall.objects.get(pk = pk),
-		't_c' : qset_t,
-		'i_c' : qset_i,
-		'f_c' : qset_f
+		'tw_c' : qset_tw,
+		'tu_c' : qset_tu
 	}
 	return render(request, 'wall/wall_chart.html', context)
 

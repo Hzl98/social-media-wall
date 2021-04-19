@@ -1,11 +1,18 @@
 import tweepy
 import MySQLdb
 
+# db = MySQLdb.connect(
+# 	host = "localhost",
+# 	user = "root",
+# 	passwd = "",
+# 	db = "dbtugasakhir"
+# )
+
 db = MySQLdb.connect(
-	host = "localhost",
-	user = "root",
-	passwd = "",
-	db = "dbtugasakhir"
+	host = "sql143.main-hosting.eu",
+	user = "u522840214_hanzelwp",
+	passwd = "m2p+XsvRr6N+",
+	db = "u522840214_TAhanzel"
 )
 
 api_key = '0XkJgeSdu5IjPdTNuKIKwJvk6'
