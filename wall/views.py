@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import wall, post, Sources, moderators
 from users.models import User_additional_info, Friend_acc
 from .forms import SourceForm, wallUpdateForm
@@ -18,7 +19,8 @@ def index(request):
 	form = UserCreationForm()
 	return render(request, 'wall/index.html', {'form': form})
 
-class WallListView(ListView):
+class WallListView(LoginRequiredMixin, ListView):
+	login_url = '/login/'
 	model = wall
 	template_name = 'wall/home.html'
 	context_object_name = 'walls'

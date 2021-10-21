@@ -8,7 +8,7 @@
                     <div class="row align-items-center no-gutters">
                         <div class="col-xl-2 col-lg-2">
                             <div class="logo-img">
-                                <a href="index.html">
+                                <a href="{% url 'wall-index' %}">
                                     <img src="{% static 'img/logo.png' %}" alt="">
                                 </a>
                             </div>
@@ -17,9 +17,7 @@
                             <div class="main-menu  d-none d-lg-block text-center">
                                 <nav>
                                     <ul id="navigation">
-                                        <li><a class="active" href="index.html">home</a></li>
-                                        
-                                        <li><a href="contact.html">Contact</a></li>
+                                        <li><a class="active" href="{% url 'wall-home' %}">home</a></li>
                                     </ul>
                                 </nav>
                             </div>

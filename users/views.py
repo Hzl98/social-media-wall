@@ -13,6 +13,7 @@ from wall.models import wall
 import json
 import midtransclient
 from random import randint
+from django.contrib.auth import logout
 
 def dictfetchall(cursor):
     "Return all rows from a cursor as a dict"
@@ -21,6 +22,10 @@ def dictfetchall(cursor):
         dict(zip(columns, row))
         for row in cursor.fetchall()
     ]
+
+def logout(request):
+	logout(request)
+	return redirect('wall-index')
 
 # Create your views here.
 def register(request):

@@ -26,7 +26,7 @@
                                     <li><a class="active">{{ request.user.username }}</a>
                                         <ul class="submenu">
                                             <li><a href="{% url 'profile' %}">Account</a></li>
-                                            <li><a href="portfolio_details.html">Logout</a></li>
+                                            <li><a href="{% url 'logout' %}">Logout</a></li>
                                         </ul>
                                     </li>
                                 </ul>
